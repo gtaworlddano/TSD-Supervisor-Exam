@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LSSD - Technology &amp; Support Division - Civilian Supervisor Examination</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --tsd-accent: #38bdf8;
+      --tsd-accent-dark: #0284c7;
+      --bg-dark: #090d16;
+      --card-bg: #111827;
+      --card-inner: #182234;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #26354d;
+      --pass: #22c55e;
+      --fail: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2.5rem 1rem;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.09) 0%, transparent 60%),
+        linear-gradient(rgba(9, 13, 22, 0.96), rgba(9, 13, 22, 0.96));
+    }
+
+    .wrapper { width: 100%; max-width: 860px; }
+
+    .dept-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--tsd-accent);
+      padding-bottom: 1.25rem;
+    }
+    .dept-badge {
+      font-family: 'Cinzel', serif;
+      color: var(--tsd-accent);
+      letter-spacing: 0.15em;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+    .dept-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .dept-sub {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.4rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2.25rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.65);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .form-group { margin-bottom: 1.25rem; }
+    label {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: var(--card-inner);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    input[type="text"]:focus, select:focus, textarea:focus {
+      border-color: var(--tsd-accent);
+    }
+
+    .counter-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .exam-section { display: none; }
+    .applicant-banner {
+      background: var(--card-inner);
+      border: 1px solid var(--border-color);
+      padding: 0.85rem 1.25rem;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      font-size: 0.85rem;
+    }
+    .applicant-banner span { color: var(--tsd-accent); font-weight: 600; }
+
+    .section-separator {
+      margin: 2.5rem 0 1rem 0;
+      padding: 0.75rem 1rem;
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 4px solid var(--tsd-accent);
+      border-radius: 0 6px 6px 0;
+      color: var(--tsd-accent);
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .section-separator:first-child {
+      margin-top: 0;
+    }
+
+    .question-block {
+      background: var(--card-inner);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .question-tag {
+      font-size: 0.75rem;
+      color: var(--tsd-accent);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+    .question-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.45;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      background: rgba(9, 13, 22, 0.6);
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      transition: all 0.15s ease-in-out;
+    }
+    .option-label:hover {
+      background: rgba(56, 189, 248, 0.07);
+      border-color: var(--border-color);
+    }
+    .option-label input { margin-top: 0.25rem; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(180deg, var(--tsd-accent), var(--tsd-accent-dark));
+      color: #090d16;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: filter 0.2s;
+      margin-top: 0.75rem;
+    }
+    .btn-primary:hover { filter: brightness(1.1); }
+
+    #status {
+      margin-top: 1.25rem;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease-in-out;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: var(--card-bg);
+      border: 2px solid var(--tsd-accent);
+      border-radius: 8px;
+      max-width: 520px;
+      width: 90%;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+      text-align: center;
+    }
+    .modal-card h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--tsd-accent);
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+    .modal-warning-text {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid var(--fail);
+      color: #fca5a5;
+      padding: 1.25rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .modal-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--tsd-accent);
+      color: #090d16;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+    .modal-btn:hover { filter: brightness(1.1); }
+
+    @media (max-width: 700px) {
+      .grid-2 { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="dept-header">
+    <div class="dept-badge">Los Santos County Sheriff's Department</div>
+    <div class="dept-title">Civilian Supervisor Examination Panel</div>
+    <div class="dept-sub">Technology &amp; Support Division</div>
+  </div>
+
+  <div id="authSection" class="card">
+    <form id="authForm">
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="candidateName">Full Name *</label>
+          <input type="text" id="candidateName" required placeholder="e.g. Jordan Mercer">
+        </div>
+        <div class="form-group">
+          <label for="employeeNumber">Employee Number *</label>
+          <input type="text" id="employeeNumber" required placeholder="e.g. 51204">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="assignment">Assignment / Bureau *</label>
+        <select id="assignment" required>
+          <option value="" disabled selected>-- Select Assignment --</option>
+          <option value="Scientific Services Bureau">Scientific Services Bureau</option>
+          <option value="Communications & Fleet Management Bureau">Communications &amp; Fleet Management Bureau</option>
+          <option value="Psychological Services Bureau">Psychological Services Bureau</option>
+          <option value="Veterinary Services Team">Veterinary Services Team</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary" style="margin-top: 0.5rem;">Authenticate &amp; Continue</button>
+    </form>
+  </div>
+
+  <div id="examSection" class="card exam-section">
+    <div class="applicant-banner">
+      <div>Candidate: <span id="dispName"></span> (<span id="dispBadge"></span>)</div>
+      <div>Assignment: <span id="dispStation"></span></div>
+    </div>
+
+    <form id="quizForm">
+      <div id="questionsContainer"></div>
+      <button type="submit" id="submitBtn" class="btn-primary">Submit Examination</button>
+      <div id="status"></div>
+    </form>
+  </div>
+</div>
+
+<div id="warningModal" class="modal-overlay">
+  <div class="modal-card">
+    <h2>Examination Notice</h2>
+    <div class="modal-warning-text">
+      (( Your data/information will not save, please do not close your browser during the examination. ))
+    </div>
+    <button id="modalConfirmBtn" class="modal-btn">I Understand &amp; Begin</button>
+  </div>
+</div>
+
+<script>
+  const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1572017707602419743/YEC_rIrbO9Ml-ysZ0tXvRc0kEuE4B3JnmHz3ubb0rgEFfxUI8wFCVN9XWuO4kR0uJD2L";
+  const ROLE_ID_TO_PING = "1452053456687857785";
+  const BOT_AVATAR_URL = "https://i.imgur.com/YOUR_IMAGE_LINK_HERE.png";
+
+  function shuffleArray(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  const examStructure = [
+    {
+      sectionTitle: "SECTION A — MULTIPLE CHOICE (23 QUESTIONS)",
+      questions: [
+        {
+          id: "mcq_1",
+          type: "mcq",
+          points: 1,
+          prompt: "A faction member tells you they are not in the official faction Discord because they prefer using unofficial servers. What is the correct supervisor response?",
+          options: [
+            "That is acceptable if they are active in-game.",
+            "Membership in the official Discord is mandatory for all faction members, roles must be kept current, and all policies apply there.",
+            "They may stay on unofficial servers if they join the official Discord later.",
+            "Only supervisors must be in the official Discord."
+          ],
+          correct: "Membership in the official Discord is mandatory for all faction members, roles must be kept current, and all policies apply there."
+        },
+        {
+          id: "mcq_2",
+          type: "mcq",
+          points: 1,
+          prompt: "A member is on duty but sitting in an office channel on TeamSpeak instead of a patrol channel. What is the correct correction?",
+          options: [
+            "Nothing, since they are still on TeamSpeak.",
+            "Members must connect to and remain in their respective patrol channel while on duty, and communication in that channel must remain OOC.",
+            "Members may use any channel if their microphone works.",
+            "Office channels are acceptable for all on-duty members."
+          ],
+          correct: "Members must connect to and remain in their respective patrol channel while on duty, and communication in that channel must remain OOC."
+        },
+        {
+          id: "mcq_3",
+          type: "mcq",
+          points: 1,
+          prompt: "A member wants to post a screenshot from the MDC showing an ongoing case and a confidential informant's name on the faction forums. What is the correct answer?",
+          options: [
+            "It may be posted if the informant's name is blurred.",
+            "It must not be posted. Content policy requires censoring confidential case information, MDC information, and informant identities.",
+            "It may be posted in the official faction thread only.",
+            "It may be posted after the case closes."
+          ],
+          correct: "It must not be posted. Content policy requires censoring confidential case information, MDC information, and informant identities."
+        },
+        {
+          id: "mcq_4",
+          type: "mcq",
+          points: 1,
+          prompt: "A member uses AI to write a full incident report and submits it with minor edits. What is the correct supervisor assessment?",
+          options: [
+            "It is acceptable because the member reviewed the output.",
+            "It is acceptable if the member discloses AI use in the report.",
+            "AI is completely prohibited for any use.",
+            "AI may only assist standard work and must not replace paperwork. The member is responsible for any AI errors."
+          ],
+          correct: "AI may only assist standard work and must not replace paperwork. The member is responsible for any AI errors."
+        },
+        {
+          id: "mcq_5",
+          type: "mcq",
+          points: 1,
+          prompt: "What is the minimum ABAS standard for non-sworn faction members?",
+          options: [
+            "0.75",
+            "0.50",
+            "0.05",
+            "0.30"
+          ],
+          correct: "0.50"
+        },
+        {
+          id: "mcq_6",
+          type: "mcq",
+          points: 1,
+          prompt: "A member wants to take a 45-day absence. What does policy require?",
+          options: [
+            "Absence longer than 10 days must be filed on forums. The maximum is 30 days, with an additional 30 days only with Command Staff approval. Patrolling during absence is forbidden.",
+            "They file a forum absence report and may patrol during the absence.",
+            "They may take up to 90 days without approval.",
+            "Absence reports are only required for sworn members."
+          ],
+          correct: "Absence longer than 10 days must be filed on forums. The maximum is 30 days, with an additional 30 days only with Command Staff approval. Patrolling during absence is forbidden."
+        },
+        {
+          id: "mcq_7",
+          type: "mcq",
+          points: 1,
+          prompt: "A member received in-character discipline 4 days ago and now requests a name-change. What is the correct response?",
+          options: [
+            "Approve it because 4 days is close enough.",
+            "Name-changes are the responsibility of Command Staff.",
+            "Approve it if the member has no prior discipline.",
+            "Refer it to another supervisor."
+          ],
+          correct: "Name-changes are the responsibility of Command Staff."
+        },
+        {
+          id: "mcq_8",
+          type: "mcq",
+          points: 1,
+          prompt: "A member receives an administrative warning from server staff. They do not report it to anyone in the faction. What does policy say?",
+          options: [
+            "There is no reporting requirement.",
+            "Only bans must be reported.",
+            "Any administrative action taken against a faction member must immediately be reported to any member of Command Staff. Faction members are held to a higher standard than regular community members.",
+            "The member may report it within 30 days."
+          ],
+          correct: "Any administrative action taken against a faction member must immediately be reported to any member of Command Staff. Faction members are held to a higher standard than regular community members."
+        },
+        {
+          id: "mcq_9",
+          type: "mcq",
+          points: 1,
+          prompt: "What is the rule on social media uniform images?",
+          options: [
+            "Deputies may not post images or videos of themselves in uniform on a publicly accessible platform; exemptions may be made for those acting in a Department capacity such as PIOs, approved by the relevant Unit Commander ranked Captain or above.",
+            "Allowed if the badge is blurred.",
+            "Allowed on private accounts only.",
+            "Only Command Staff may post."
+          ],
+          correct: "Deputies may not post images or videos of themselves in uniform on a publicly accessible platform; exemptions may be made for those acting in a Department capacity such as PIOs, approved by the relevant Unit Commander ranked Captain or above."
+        },
+        {
+          id: "mcq_10",
+          type: "mcq",
+          points: 1,
+          prompt: "When may public CCTV cameras be accessed?",
+          options: [
+            "Without probable cause if the member is a supervisor.",
+            "Remotely from anywhere for station cameras.",
+            "Only when probable cause of a crime is established; the reasoning must be in-character and articulate the probable cause; generic responses are prohibited; station or facility cameras require physical access to a terminal within that facility.",
+            "With a generic \"investigation\" note."
+          ],
+          correct: "Only when probable cause of a crime is established; the reasoning must be in-character and articulate the probable cause; generic responses are prohibited; station or facility cameras require physical access to a terminal within that facility."
+        },
+        {
+          id: "mcq_11",
+          type: "mcq",
+          points: 1,
+          prompt: "What is the rule on pager use?",
+          options: [
+            "May be used for routine non-emergency contact.",
+            "The pager is for emergency communication; members should avoid paging off-duty supervisors or Command Staff simply to get cleared on scene or to avoid required reports; IC knowledge of a page is retained only by sender and receiver.",
+            "All pager messages should be marked Sensitive.",
+            "Pager messages are visible to all faction members as IC knowledge."
+          ],
+          correct: "The pager is for emergency communication; members should avoid paging off-duty supervisors or Command Staff simply to get cleared on scene or to avoid required reports; IC knowledge of a page is retained only by sender and receiver."
+        },
+        {
+          id: "mcq_12",
+          type: "mcq",
+          points: 1,
+          prompt: "Who may place a member on indefinite administrative leave?",
+          options: [
+            "Only the Internal Affairs Bureau and Command Staff ranked Captain and above are authorized; Sergeants and above may do so only if no Command Staff are on-shift, a pager attempt to IAB has gone unanswered after a reasonable time, and the Unit Commander and IAB are immediately notified, and only in response to ongoing major or critical investigations.",
+            "Any supervisor at any time.",
+            "Only the Sheriff.",
+            "Administrative leave is a form of discipline."
+          ],
+          correct: "Only the Internal Affairs Bureau and Command Staff ranked Captain and above are authorized; Sergeants and above may do so only if no Command Staff are on-shift, a pager attempt to IAB has gone unanswered after a reasonable time, and the Unit Commander and IAB are immediately notified, and only in response to ongoing major or critical investigations."
+        },
+        {
+          id: "mcq_13",
+          type: "mcq",
+          points: 1,
+          prompt: "How must a member identify themselves to the public?",
+          options: [
+            "May refuse.",
+            "First name only.",
+            "When requested, the member shall provide their rank, last name, and employee number; members operating undercover or in LE-sensitive capacities identify by employee number only.",
+            "May provide a pseudonym."
+          ],
+          correct: "When requested, the member shall provide their rank, last name, and employee number; members operating undercover or in LE-sensitive capacities identify by employee number only."
+        },
+        {
+          id: "mcq_14",
+          type: "mcq",
+          points: 1,
+          prompt: "What information may be released to victims?",
+          options: [
+            "All case details immediately.",
+            "Victims, next of kin, or authorized representatives may receive the classification of the crime, the status of the case, and information necessary to protect the victim's safety, provided its release does not interfere with an ongoing investigation or violate privacy protections; if unsure, refer the request to a Supervisor or SIB.",
+            "Only that the case is open.",
+            "Must file a formal request through the courts."
+          ],
+          correct: "Victims, next of kin, or authorized representatives may receive the classification of the crime, the status of the case, and information necessary to protect the victim's safety, provided its release does not interfere with an ongoing investigation or violate privacy protections; if unsure, refer the request to a Supervisor or SIB."
+        },
+        {
+          id: "mcq_15",
+          type: "mcq",
+          points: 1,
+          prompt: "What is the DICVS retention rule?",
+          options: [
+            "30 days.",
+            "Deleted immediately after shift.",
+            "May be disabled by the member.",
+            "Records are maintained for 14 days prior to deletion and may be accessed digitally by any Department member, who may flag the recording to be saved longer if necessary, such as for an IAB investigation; DICVS cannot be manually disabled."
+          ],
+          correct: "Records are maintained for 14 days prior to deletion and may be accessed digitally by any Department member, who may flag the recording to be saved longer if necessary, such as for an IAB investigation; DICVS cannot be manually disabled."
+        },
+        {
+          id: "mcq_16",
+          type: "mcq",
+          points: 1,
+          prompt: "A supervisor wants to return unoccupied faction vehicles to the motor pool. What is required?",
+          options: [
+            "May return vehicles at any time without checking.",
+            "Must verify with all online members before executing /ftow to ensure no active scenes, investigations, or perimeters are negatively impacted.",
+            "Only CFMB may use /ftow.",
+            "May be used to move vehicles during an active pursuit."
+          ],
+          correct: "Must verify with all online members before executing /ftow to ensure no active scenes, investigations, or perimeters are negatively impacted."
+        },
+        {
+          id: "mcq_17",
+          type: "mcq",
+          points: 1,
+          prompt: "What does policy require for CAD use?",
+          options: [
+            "Log in immediately upon going on duty, enter the full non-phonetic callsign, mark available, insert unit type, and use quick location updates only when physically inside the patrol vehicle.",
+            "Phonetic callsigns are acceptable.",
+            "Location may be updated remotely from anywhere.",
+            "CAD login is optional if on TeamSpeak."
+          ],
+          correct: "Log in immediately upon going on duty, enter the full non-phonetic callsign, mark available, insert unit type, and use quick location updates only when physically inside the patrol vehicle."
+        },
+        {
+          id: "mcq_18",
+          type: "mcq",
+          points: 1,
+          prompt: "What is required for a character-kill?",
+          options: [
+            "Prior Executive Staff approval, evaluated under the same conditions as a name-change with some exemptions on a case-by-case basis.",
+            "No approval.",
+            "IAB notification after the fact.",
+            "Character-kills are prohibited."
+          ],
+          correct: "Prior Executive Staff approval, evaluated under the same conditions as a name-change with some exemptions on a case-by-case basis."
+        },
+        {
+          id: "mcq_19",
+          type: "mcq",
+          points: 1,
+          prompt: "What is required when responding to assignment applications?",
+          options: [
+            "Applications may remain unanswered indefinitely.",
+            "Only denied applicants receive a response.",
+            "Responses are only required for command-level assignments.",
+            "Applications shall receive a response within one week, and denied applicants must receive an explanation with evidence and a timeframe for reapplying."
+          ],
+          correct: "Applications shall receive a response within one week, and denied applicants must receive an explanation with evidence and a timeframe for reapplying."
+        },
+        {
+          id: "mcq_20",
+          type: "mcq",
+          points: 1,
+          prompt: "What is required when two members are in a personal relationship?",
+          options: [
+            "Nothing, if professional.",
+            "They must notify their unit commanders and IAB, shall not work in a supervisory chain within two steps of each other, and cannot partner in the same patrol car.",
+            "They must transfer to different divisions.",
+            "They must keep it secret."
+          ],
+          correct: "They must notify their unit commanders and IAB, shall not work in a supervisory chain within two steps of each other, and cannot partner in the same patrol car."
+        },
+        {
+          id: "mcq_21",
+          type: "mcq",
+          points: 1,
+          prompt: "A member posts a sexually suggestive GIF in the faction Discord as a joke. What does policy say?",
+          options: [
+            "Allowed as a joke.",
+            "Only prohibited in faction chat.",
+            "Only prohibited if someone complains.",
+            "Lewd, sexual, or otherwise inappropriate conduct is prohibited on all faction platforms, including the faction Discord, and includes GIFs, photos, and media, even if intended as comedy."
+          ],
+          correct: "Lewd, sexual, or otherwise inappropriate conduct is prohibited on all faction platforms, including the faction Discord, and includes GIFs, photos, and media, even if intended as comedy."
+        },
+        {
+          id: "mcq_22",
+          type: "mcq",
+          points: 1,
+          prompt: "A member has an issue and wants to contact the Sheriff directly. What is the correct guidance?",
+          options: [
+            "Contact the Sheriff for faster results.",
+            "Post the issue on the forums.",
+            "Ignore the issue.",
+            "Apply the chain of command. Members should avoid contacting a superior for matters someone lower can resolve in a timely manner."
+          ],
+          correct: "Apply the chain of command. Members should avoid contacting a superior for matters someone lower can resolve in a timely manner."
+        },
+        {
+          id: "mcq_23",
+          type: "mcq",
+          points: 1,
+          prompt: "What is the rule for the official faction thread?",
+          options: [
+            "Any content may be posted if accurate.",
+            "Content on the official faction thread must only showcase the faction in a positive light from an OOC perspective and must not showcase unprofessionalism.",
+            "Content may be posted if a supervisor approves.",
+            "Only Command Staff may post."
+          ],
+          correct: "Content on the official faction thread must only showcase the faction in a positive light from an OOC perspective and must not showcase unprofessionalism."
+        }
+      ]
+    },
+    {
+      sectionTitle: "SECTION B — WRITTEN SCENARIOS (3 QUESTIONS)",
+      questions: [
+        {
+          id: "sa_1",
+          type: "short_answer",
+          points: 5,
+          prompt: "A newer member's roleplay is genuinely poor, unrealistic and/or immersion-breaking, but they are enthusiastic and receptive to feedback. What would you do?",
+          rubric: "Person has to be reported to ES/CS regardless of their enthusiasm."
+        },
+        {
+          id: "sa_2",
+          type: "short_answer",
+          points: 5,
+          prompt: "A civilian member on your team is privately frustrated over a few things they experienced in-game. Sworn deputies don't treat them with the deference they'd give another deputy, and they start to complain about this in civilian channels on the Discord. How do you handle this?",
+          rubric: "They should not ignore and let a drama happen over this. Handling it IC should be encouraged."
+        },
+        {
+          id: "sa_3",
+          type: "short_answer",
+          points: 5,
+          prompt: "A newer member says: \"Nobody gives me roleplay, I just sit around waiting for calls. This server is dead when I'm on.\" As a civilian supervisor, what is your response, and what does the faction expect from members regarding self-generated and passive roleplay?",
+          rubric: "The faction explicitly says members are expected to provide and generate roleplay on their own, that other members will not spoon-feed RP, and that no one is obligated to."
+        }
+      ]
+    }
+  ];
+
+  let candidateData = {};
+
+  document.getElementById("authForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    candidateData = {
+      name: document.getElementById("candidateName").value.trim(),
+      badge: document.getElementById("employeeNumber").value.trim(),
+      assignment: document.getElementById("assignment").value
+    };
+
+    if (!candidateData.name || !candidateData.badge || !candidateData.assignment) {
+      alert("Please fill out all mandatory fields before continuing.");
+      return;
+    }
+
+    document.getElementById("warningModal").classList.add("active");
+  });
+
+  document.getElementById("modalConfirmBtn").addEventListener("click", () => {
+    document.getElementById("warningModal").classList.remove("active");
+
+    document.getElementById("dispName").innerText = candidateData.name;
+    document.getElementById("dispBadge").innerText = `#${candidateData.badge}`;
+    document.getElementById("dispStation").innerText = candidateData.assignment;
+
+    document.getElementById("authSection").style.display = "none";
+    document.getElementById("examSection").style.display = "block";
+    window.scrollTo(0, 0);
+  });
+
+  const qContainer = document.getElementById("questionsContainer");
+
+  function renderQuestion(q) {
+    const block = document.createElement("div");
+    block.className = "question-block";
+
+    if (q.type === "mcq") {
+      const shuffledOptions = shuffleArray(q.options);
+      block.innerHTML = `
+        <div class="question-tag">MULTIPLE CHOICE • ${q.points} POINT</div>
+        <div class="question-title">${q.prompt}</div>
+        <div class="options">
+          ${shuffledOptions.map((opt) => `
+            <label class="option-label">
+              <input type="radio" name="${q.id}" value="${opt.replace(/"/g, '&quot;')}" required>
+              <span>${opt}</span>
+            </label>
+          `).join("")}
+        </div>
+      `;
+    } else if (q.type === "short_answer") {
+      block.innerHTML = `
+        <div class="question-tag">WRITTEN SCENARIO • ${q.points} POINTS (Max 750 chars)</div>
+        <div class="question-title">${q.prompt}</div>
+        <textarea name="${q.id}" id="${q.id}_txt" maxlength="750" placeholder="Type response (max 750 chars)..."></textarea>
+        <div class="counter-bar">
+          <span id="${q.id}_words">0 words</span>
+          <span id="${q.id}_chars">0 / 750 characters</span>
+        </div>
+      `;
+
+      setTimeout(() => {
+        const textarea = document.getElementById(`${q.id}_txt`);
+        const wordEl = document.getElementById(`${q.id}_words`);
+        const charEl = document.getElementById(`${q.id}_chars`);
+
+        if (textarea && wordEl && charEl) {
+          textarea.addEventListener("input", () => {
+            const val = textarea.value;
+            const charCount = val.length;
+            const words = val.trim().length > 0 ? val.trim().split(/\s+/).length : 0;
+
+            wordEl.innerText = `${words} word${words === 1 ? '' : 's'}`;
+            charEl.innerText = `${charCount} / 750 characters`;
+          });
+        }
+      }, 50);
+    }
+    qContainer.appendChild(block);
+  }
+
+  examStructure.forEach((sec) => {
+    const secHeader = document.createElement("div");
+    secHeader.className = "section-separator";
+    secHeader.innerText = sec.sectionTitle;
+    qContainer.appendChild(secHeader);
+
+    const randomizedQuestions = shuffleArray(sec.questions);
+    randomizedQuestions.forEach(q => renderQuestion(q));
+  });
+
+  document.getElementById("quizForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById("submitBtn");
+    const statusDiv = document.getElementById("status");
+
+    submitBtn.disabled = true;
+    statusDiv.style.color = "var(--text-muted)";
+    statusDiv.innerText = "Submitting examination to Discord...";
+
+    let autoScore = 0;
+    let maxAutoScore = 0;
+    let manualPointsTotal = 0;
+    const shortAnswerResponses = [];
+
+    examStructure.forEach((sec) => {
+      sec.questions.forEach((q) => {
+        if (q.type === "mcq") {
+          maxAutoScore += q.points;
+          const selected = document.querySelector(`input[name="${q.id}"]:checked`)?.value;
+          if (selected === q.correct) { autoScore += q.points; }
+        } else if (q.type === "short_answer") {
+          manualPointsTotal += q.points;
+          let textVal = document.querySelector(`textarea[name="${q.id}"]`)?.value?.trim();
+          if (textVal && textVal.length > 750) {
+            textVal = textVal.substring(0, 750);
+          }
+          shortAnswerResponses.push({
+            prompt: q.prompt,
+            rubric: q.rubric,
+            answer: textVal && textVal.length > 0 ? textVal : "No answer provided."
+          });
+        }
+      });
+    });
+
+    const autoPercentage = maxAutoScore > 0 ? Math.round((autoScore / maxAutoScore) * 100) : 0;
+    const isPassing = autoPercentage >= 60;
+    const statusSymbol = isPassing ? "✅" : "❌";
+    const statusText = isPassing ? "Passing" : "Failing";
+    const nowString = new Date().toUTCString();
+
+    const summaryEmbed = {
+      title: "Civilian Supervisor Examination — Submission",
+      description: `Candidate: **${candidateData.name}**\nEmployee No.: \`#${candidateData.badge}\`\nAssignment: **${candidateData.assignment}**\n\n> **DISCLAIMER:** Grade manual responses directly from this thread. Do not share outside Technology & Support Division Management.\n\n⚠️ **Please grade and tally manual questions below and add it to the total from the auto-graded section.**\n*(Manual Section: ${shortAnswerResponses.length} questions × 5 points = ${manualPointsTotal} total points)*`,
+      color: isPassing ? 0x22c55e : 0xef4444,
+      fields: [
+        { name: "Auto-Score", value: `**${autoScore} / ${maxAutoScore}**`, inline: true },
+        { name: "Percentage", value: `**${autoPercentage}%**`, inline: true },
+        { name: "Status", value: `${statusSymbol} **${statusText}**`, inline: true }
+      ],
+      footer: { text: `LSSD Technology & Support Division - ${nowString}` },
+      timestamp: new Date().toISOString()
+    };
+
+    const scenarioEmbeds = shortAnswerResponses.map((sa, idx) => ({
+      title: `Written Scenario ${idx + 1} of ${shortAnswerResponses.length}`,
+      description: `**Question:**\n> ${sa.prompt}`,
+      color: 0x38bdf8,
+      fields: [
+        {
+          name: "Candidate Response",
+          value: `\`\`\`text\n${sa.answer}\n\`\`\``,
+          inline: false
+        },
+        {
+          name: "Grading Key / Rubric",
+          value: `_${sa.rubric}_`,
+          inline: false
+        }
+      ],
+      footer: { text: `TSD Management • Scenario ${idx + 1} Evaluation` }
+    }));
+
+    const forumThreadTitle = `${candidateData.name} - ${candidateData.assignment}`;
+
+    try {
+      const payload = {
+        thread_name: forumThreadTitle,
+        content: `<@&${ROLE_ID_TO_PING}> **New Civilian Supervisor Exam Submission Received:**`,
+        username: "LSSD Technology & Support Division",
+        avatar_url: BOT_AVATAR_URL,
+        allowed_mentions: { roles: [ROLE_ID_TO_PING] },
+        embeds: [summaryEmbed, ...scenarioEmbeds]
+      };
+
+      const response = await fetch(DISCORD_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok || response.status === 201 || response.status === 200) {
+        statusDiv.style.color = "var(--pass)";
+        statusDiv.innerText = "Examination Submitted - You may close this window now.";
+      } else {
+        const errText = await response.text();
+        console.error("Discord Error:", response.status, errText);
+        statusDiv.style.color = "var(--fail)";
+        statusDiv.innerText = `❌ Discord Error (${response.status}): Check console for details.`;
+        submitBtn.disabled = false;
+      }
+    } catch (err) {
+      console.error("Network / CORS error:", err);
+      statusDiv.style.color = "var(--fail)";
+      statusDiv.innerText = "❌ Network error. Check console logs.";
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
